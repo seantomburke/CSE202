@@ -1,0 +1,32 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
+
+public class SitesHashMap extends HashMap<Frequency> {
+	
+	public void insertSite(String s)
+	{
+		if(this.containsKey(s))
+		{
+			this.put(s, this.get(s)+1);
+		}
+		else
+		{
+			this.put(s, 1);
+		}
+	}
+	
+	public MaxHeap createMaxHeap()
+	{
+		MaxHeap heap = new MaxHeap(this.size());
+		ArrayList<Frequency> entries = this.entrySet();
+		for(java.util.Map.Entry<String, Integer> f: entries)
+		{
+			
+		}
+		return heap;
+		
+	}
+
+}

@@ -1,0 +1,18 @@
+
+public class Frequency extends Entry{
+	
+	public String site;
+	public int frequency;
+	
+	public Frequency(String word)
+	{
+		this.site = word;
+		this.frequency = 1;
+	}
+	
+	public void increment()
+	{
+		this.frequency++;
+	}
+
+}

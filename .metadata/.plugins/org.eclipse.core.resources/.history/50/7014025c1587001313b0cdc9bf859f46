@@ -1,0 +1,199 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.apache.axis.utils.ArrayUtil;
+import org.apache.commons.lang3.ArrayUtils;
+
+public class MaxHeap
+{
+    private Frequency[] Heap;
+    private int size;
+    private int maxsize;
+ 
+    private static final int FRONT = 1;
+    
+ 
+    public MaxHeap(int maxsize)
+    {
+        this.maxsize = maxsize;
+        this.size = 0;
+        Heap = new Frequency[this.maxsize + 1];
+        Heap[0] = new Frequency("test");
+    }
+
+	public MaxHeap(Set<Entry<String, Integer>> hmEntrySet)
+    {
+    	this.maxsize = hmEntrySet.size();
+    	this.size = this.maxsize;
+        Heap = new Frequency[this.maxsize + 1];
+        Heap[0] = new Frequency("test");
+        int i=0;
+        Iterator<Entry<String, Integer>> iter = hmEntrySet.iterator();
+    	while(iter.hasNext())
+    	{
+    		i++;
+    		Heap[i] = new Frequency(iter.next().getKey(), iter.next().getValue());
+    				
+    	}
+    	
+    	for(int k=1; k<=size;k++)
+    	{
+    		System.out.println("MaxHeapifying: " + k);
+    		maxHeapify(i);
+    	}
+    }
+ 
+    public MaxHeap(Frequency[] subheap) {
+    	this.maxsize = subheap.length;
+        this.size = subheap.length;
+        Heap = subheap;
+        Heap[0] = new Frequency("test");
+        
+	}
+
+	private int parent(int pos)
+    {
+        return pos / 2;
+    }
+ 
+    private int leftChild(int pos)
+    {
+        return (2 * pos);
+    }
+ 
+    private int rightChild(int pos)
+    {
+        return (2 * pos) + 1;
+    }
+ 
+    private boolean isLeaf(int pos)
+    {
+        if (pos >=  (size / 2)  &&  pos <= size)
+        {
+            return true;
+        }
+        return false;
+    }
+ 
+    private void swap(int fpos,int spos)
+    {
+        Frequency tmp;
+        tmp = Heap[fpos];
+        Heap[fpos] = Heap[spos];
+        Heap[spos] = tmp;
+    }
+ 
+    private void maxHeapify(int pos)
+    {
+        if (!isLeaf(pos))
+        { 
+            if ( Heap[pos].frequency < Heap[leftChild(pos)].frequency  || Heap[pos].frequency < Heap[rightChild(pos)].frequency)
+            {
+                if (Heap[leftChild(pos)].frequency > Heap[rightChild(pos)].frequency)
+                {
+                    swap(pos, leftChild(pos));
+                    maxHeapify(leftChild(pos));
+                }else
+                {
+                    swap(pos, rightChild(pos));
+                    maxHeapify(rightChild(pos));
+                }
+            }
+        }
+    }
+ 
+    public void insert(Frequency element)
+    {
+    	for(int i=0; i<size;i++)
+    	{
+    		if(Heap[i].site.equals(element.site) && i<size)
+    		{
+    			Heap[i].increment();
+    			return;
+    		}
+    	}
+    	
+        Heap[++size] = element;
+        int current = size;
+ 
+        while(Heap[current].frequency > Heap[parent(current)].frequency)
+        {
+            swap(current,parent(current));
+            current = parent(current);
+        }
+    }
+ 
+    public void print()
+    {
+        for (int i = 1; i <= size / 2; i++ )
+        {
+            System.out.print(" PARENT : " + Heap[i].frequency + Heap[i].site + " LEFT CHILD : " + Heap[2*i].frequency + Heap[2*i].site
+                  + " RIGHT CHILD :" + Heap[2 * i  + 1].frequency + Heap[2 * i  + 1].site);
+            System.out.println();
+        }
+    }
+ 
+    public void maxHeap()
+    {
+        for (int pos = (size / 2); pos >= 1; pos--)
+        {
+            maxHeapify(pos);
+        }
+    }
+ 
+    public Frequency remove()
+    {
+        Frequency popped = Heap[FRONT];
+        Heap[FRONT] = Heap[size--]; 
+        maxHeapify(FRONT);
+        return popped;
+    }
+    
+    public ArrayList<Frequency> top(Integer k)
+    {
+    	ArrayList output = new ArrayList<Frequency>();
+    	Frequency subarray[] = new Frequency[(int)Math.pow(k, 2) + 1];
+    	for(int l=0; l<= Math.pow(k,2);l++)
+    	{
+    		subarray[l] = Heap[l];
+    	}
+    	MaxHeap subheap = new MaxHeap(subarray);
+    	
+    	
+    	
+    }
+    
+    public static MaxHeap createHeap(ArrayList<String> input)
+    {
+    	MaxHeap output = new MaxHeap(input.size());
+    	for(String s: input)
+    	{
+    		output.insert(new Frequency(s));
+    		System.out.println(s);
+    	}
+    	return output;
+    }
+ 
+    public static void main(String...arg)
+    {
+        System.out.println("The Max Heap is ");
+        MaxHeap maxHeap = new MaxHeap(15);
+        maxHeap.insert(new Frequency("www.sean.com"));
+        maxHeap.insert(new Frequency("www.vineel.com"));
+        maxHeap.insert(new Frequency("www.bonnie.com"));
+        maxHeap.insert(new Frequency("www.sean.com"));
+        maxHeap.insert(new Frequency("www.bonnie.com"));
+        maxHeap.insert(new Frequency("www.vineel.com"));
+        maxHeap.insert(new Frequency("www.sean.com"));
+        maxHeap.insert(new Frequency("www.vineel.com"));
+        maxHeap.insert(new Frequency("www.bonnie.com"));
+        maxHeap.insert(new Frequency("www.jen.com"));
+ 
+        maxHeap.print();
+        maxHeap.
+        //System.out.println("The max val is " + maxHeap.remove());
+    }
+}
