@@ -1,0 +1,14 @@
+import java.util.HashMap;
+
+
+public class SitesHashMap<Object, Object> extends HashMap {
+	
+	public void insertSite(String s)
+	{
+		if(this.containsKey(s))
+		{
+			System.out.println(this.get(s));
+		}
+	}
+
+}
